@@ -1,24 +1,22 @@
-# Use an official Python runtime as a parent image
-FROM python:3.11-slim
+# Use official Python image
+FROM python:3.10-slim
 
-# Set environment variables
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV PYTHONUNBUFFERED=1
-
-# Set the working directory in the container
+# Set working directory inside container
 WORKDIR /app
 
-# Copy the current directory contents into the container at /app
-COPY . /app
+# Copy all files to the container's /app folder
+COPY . .
 
-# Install any needed packages specified in requirements.txt
+# Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Expose the port the app runs on
+# Set environment variables for Flask
+ENV FLASK_APP=main.py
+ENV FLASK_RUN_HOST=0.0.0.0
+ENV FLASK_ENV=development
+
+# Expose port 5000 for Flask
 EXPOSE 5000
 
-# Define environment variable
-ENV FLASK_APP=main.py
-
-# Run the application
-CMD ["python", "main.py"]
+# Run Flask app
+CMD ["flask", "run"]
